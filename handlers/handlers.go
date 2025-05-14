@@ -16,11 +16,6 @@ var (
     clients = make(map[*websocket.Conn]struct{})
     mu      sync.RWMutex
 )
-	
-
-func HelloWorld(c *fiber.Ctx) error {
-	return c.SendString("Hello from API v1!")
-}
 
 
 func HandleInsertWeather(c *fiber.Ctx) error {
