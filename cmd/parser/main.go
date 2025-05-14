@@ -8,6 +8,6 @@ import (
 
 func main() {
 
-	log.Println("Starting parser")
+	log.Println("Starting parser service")
 	services.Parser() 
 }
