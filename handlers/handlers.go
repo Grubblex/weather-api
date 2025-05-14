@@ -38,7 +38,7 @@ func HandleInsertWeather(c *fiber.Ctx) error {
 	weatherData, err := repositories.InsertWeather(weather)
 
 	if err != nil {
-        return c.Status(500).JSON(fiber.Map{"error": "Database failure"})
+        return c.Status(500).JSON(fiber.Map{"error": "Server Error"})
     }
 
 	go BroadcastWeather(*weatherData)
@@ -57,7 +57,7 @@ func HandleWeatherByDate(c *fiber.Ctx) error {
         if errors.Is(err, gorm.ErrRecordNotFound) {
             return c.Status(404).JSON(fiber.Map{"error": "Date not found"})
         }
-        return c.Status(500).JSON(fiber.Map{"error": "Database failure"})
+        return c.Status(500).JSON(fiber.Map{"error": "Server Error"})
     }
 
     return c.JSON(weatherData)
@@ -75,7 +75,7 @@ func HandleWeatherByDateRange(c *fiber.Ctx) error {
         if errors.Is(err, gorm.ErrRecordNotFound) {
             return c.Status(404).JSON(fiber.Map{"error": "Date not found"})
         }
-        return c.Status(500).JSON(fiber.Map{"error": "Database failure"})
+        return c.Status(500).JSON(fiber.Map{"error": "Server Error"})
     }
 
     return c.JSON(weatherData)
