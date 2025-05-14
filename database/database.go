@@ -13,13 +13,11 @@ import (
 	"github.com/Grubblex/weather-api/models"
 )
 
-var DB *gorm.DB
 
-func ConnectDb () {
-	
+func NewDatabase() (*gorm.DB, error) {
 	err := godotenv.Load()
 	if err != nil {
-		log.Print("Loading .env file failed !")
+		log.Print("Loading .env file failed!")
 	}
 
 	dsn := fmt.Sprintf(
@@ -31,15 +29,17 @@ func ConnectDb () {
 		os.Getenv("DB_PORT"),
 	)
 
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
-		log.Fatal("Fehler bei der DB-Verbindung: ", err)
+		return nil, fmt.Errorf("error connecting to db: %w", err)
 	}
 
-	db.Logger = logger.Default.LogMode(logger.Info)
-	db.AutoMigrate(&models.WeatherData{})
+	if err := db.AutoMigrate(&models.WeatherData{}); err != nil {
+		return nil, fmt.Errorf("migration failed: %w", err)
+	}
 
-	DB = db
-	log.Print("Successfully connected to db")
-
+	log.Print("Successfully connected to DB")
+	return db, nil
 }

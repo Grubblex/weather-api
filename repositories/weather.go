@@ -1,28 +1,33 @@
 package repositories
 
 import (
-	"fmt"
 	"time"
 
-	"github.com/Grubblex/weather-api/database"
 	"github.com/Grubblex/weather-api/models"
+	"gorm.io/gorm"
 )
 
-func InsertWeather(weather models.WeatherData) (*models.WeatherData, error) {
+type WeatherRepository struct {
+    DB *gorm.DB
+}
 
-	fmt.Print(weather)
-	err := database.DB.Create(&weather).Error
+func NewWeatherRepository(db *gorm.DB) *WeatherRepository {
+    return &WeatherRepository{DB: db}
+}
+
+func (r *WeatherRepository) InsertWeather(weather models.WeatherData) (*models.WeatherData, error) {
+	err := r.DB.Create(&weather).Error
 	return &weather, err
 }
 
-func GetWeatherByDate(date time.Time) (*models.WeatherData, error) {
+func (r *WeatherRepository) GetWeatherByDate(date time.Time) (*models.WeatherData, error) {
 	var data models.WeatherData
-	err := database.DB.Where("date = ?", date).First(&data).Error
+	err := r.DB.Where("date = ?", date).First(&data).Error
 	return &data, err
 }
 
-func GetWeatherByDateRange(start time.Time, end time.Time) ([]models.WeatherData, error) {
-    var data []models.WeatherData  
-    err := database.DB.Where("date BETWEEN ? AND ?", start, end).Find(&data).Error
-    return data, err
+func (r *WeatherRepository) GetWeatherByDateRange(start time.Time, end time.Time) ([]models.WeatherData, error) {
+	var data []models.WeatherData
+	err := r.DB.Where("date BETWEEN ? AND ?", start, end).Find(&data).Error
+	return data, err
 }
