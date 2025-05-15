@@ -136,7 +136,7 @@ To run a simple test run the following command
 go test -v tests/integration/weather_routes_test.go
 ```
 
-If the test was Successfull it should return this
+If the test was Successful it should return this
 
 ```
 --- PASS: TestWeatherRoutesWithDB (0.04s)

@@ -182,7 +182,7 @@ func TestWeatherRoutesWithDB(t *testing.T) {
 		resp, _ := app.Test(req)
 		defer resp.Body.Close()
 		
-		assert.Equal(t, fiber.StatusSwitchingProtocols, resp.StatusCode, "Sollte 101 (Switching Protocols) sein")
+		assert.Equal(t, fiber.StatusSwitchingProtocols, resp.StatusCode) // 101 Switching Protocols
 		assert.Equal(t, "websocket", resp.Header.Get("Upgrade"))
 	})
 	
