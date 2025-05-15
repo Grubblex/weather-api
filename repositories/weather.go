@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"context"
 	"time"
 
 	"github.com/Grubblex/weather-api/models"
@@ -26,13 +27,20 @@ func (r *WeatherRepository) GetWeatherByDate(date time.Time) (*models.WeatherDat
 	return &data, err
 }
 
-func (r *WeatherRepository) GetWeatherByDateRange(start time.Time, end time.Time) ([]models.WeatherData, error) {
+func (r *WeatherRepository) GetWeatherByDateRange(start, end time.Time) ([]models.WeatherData, error) {
+    ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute) // Erhöhtes Timeout
+    defer cancel()
+    
     var data []models.WeatherData
-    if err := r.DB.Where("date BETWEEN ? AND ?", start, end).Find(&data).Error; err != nil {
+    if err := r.DB.WithContext(ctx).
+        Where("date BETWEEN ? AND ?", start, end).
+        Order("date ASC"). // Explizite Sortierung
+        Find(&data).Error; err != nil {
         return nil, err
     }
+    
     if len(data) == 0 {
-        return nil, gorm.ErrRecordNotFound 
+        return nil, gorm.ErrRecordNotFound
     }
     return data, nil
 }
