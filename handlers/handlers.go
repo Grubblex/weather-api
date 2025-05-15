@@ -70,7 +70,7 @@ func (h *WeatherHandler) HandleWeatherByDateRange(c *fiber.Ctx) error {
 
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return c.Status(404).JSON(fiber.Map{"error": "Date not found"})
+			return c.Status(404).JSON(fiber.Map{"error": "No data found for date range"})
 		}
 		return c.Status(500).JSON(fiber.Map{"error": "Server Error"})
 	}

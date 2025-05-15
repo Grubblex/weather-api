@@ -12,7 +12,7 @@ func SetupRoutes(app *fiber.App, handler *handlers.WeatherHandler) {
 	api := app.Group("/api", middleware.Logger())
   	v1 := api.Group("/v1") 
 
-  	v1.Post("/addWeatherEntry",
+  	v1.Post("/weather",
 	middleware.ValidateRawData(),
 	handler.HandleInsertWeather)
 

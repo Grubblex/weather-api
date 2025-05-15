@@ -27,7 +27,12 @@ func (r *WeatherRepository) GetWeatherByDate(date time.Time) (*models.WeatherDat
 }
 
 func (r *WeatherRepository) GetWeatherByDateRange(start time.Time, end time.Time) ([]models.WeatherData, error) {
-	var data []models.WeatherData
-	err := r.DB.Where("date BETWEEN ? AND ?", start, end).Find(&data).Error
-	return data, err
+    var data []models.WeatherData
+    if err := r.DB.Where("date BETWEEN ? AND ?", start, end).Find(&data).Error; err != nil {
+        return nil, err
+    }
+    if len(data) == 0 {
+        return nil, gorm.ErrRecordNotFound 
+    }
+    return data, nil
 }
