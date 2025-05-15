@@ -23,7 +23,7 @@ func Parser() {
 		line := scanner.Text()
 		lineNum++
 
-		agent := fiber.Post("http://localhost:3000/api/v1/addWeatherEntry")
+		agent := fiber.Post("http://localhost:3000/api/v1/weather")
 		agent.Body([]byte(line)) 
 
 		statusCode, body, errs := agent.Bytes()
