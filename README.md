@@ -2,6 +2,14 @@
 
 A simple RESTful Api written in GO.
 
+## Tech Stack
+
+- [Go 1.23.3](https://go.dev/dl/)
+- [Fiber v2](https://docs.gofiber.io/)
+- [PostgreSQL 17](https://www.postgresql.org/docs/)
+- [GORM](https://gorm.io/) (ORM)
+
+
 ## Project Structure
 
 
@@ -23,6 +31,27 @@ weather-api/
 ```
 
 ## Setup
+
+Make sure you have a existing `.env` file in your root dir. It should look like the `.env.example` file.
+
+```
+# Database Connection
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=root
+DB_PASSWORD=secret
+DB_NAME=weather_db
+
+# Connection Pool Settings
+DB_MAX_OPEN_CONNS=100
+DB_MAX_IDLE_CONNS=10
+DB_CONN_MAX_LIFETIME=1h
+DB_CONN_MAX_IDLE_TIME=30m
+
+# Server Configuration
+PORT=3000
+```
+
 1. Start the server
 ```
 go run ./cmd/server/main.go
